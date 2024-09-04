@@ -58,11 +58,17 @@ class Reservation {
     + annuler(): void
 }
 
-class SystemeGestionReservations {
-    + List<Reservation> reservations
+interface SystemeGestionReservations {
     + reserver(Client client, LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): Reservation
     + annulerReservation(Reservation reservation): void
-    + List<Chambre> trouverChambresDisponibles(LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): List<Chambre>
+    + trouverChambresDisponibles(LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): List<Chambre>
+}
+
+class SystemeGestionReservationsImpl {
+    - List<Reservation> reservations
+    + reserver(Client client, LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): Reservation
+    + annulerReservation(Reservation reservation): void
+    + trouverChambresDisponibles(LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): List<Chambre>
 }
 
 Client --> Reservation
@@ -70,7 +76,8 @@ Chambre --> Reservation
 LieuHebergement "1" --> "0..*" Chambre
 Reservation "1" --> "1" Client
 Reservation "1" --> "1" Chambre
-SystemeGestionReservations --> Reservation
-SystemeGestionReservations --> LieuHebergement
+SystemeGestionReservations <|.. SystemeGestionReservationsImpl
+SystemeGestionReservationsImpl --> Reservation
+SystemeGestionReservationsImpl --> LieuHebergement
 
 @enduml
