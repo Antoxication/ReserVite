@@ -10,41 +10,32 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/plantuml</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/src/main/plantuml</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
+                <groupId>com.github.davidmoten</groupId>
                 <artifactId>plantuml-maven-plugin</artifactId>
-                <version>1.3.3</version>
+                <version>0.2.12</version>
                 <executions>
                     <execution>
+                        <id>generate-diagrams</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <sourceFiles>${basedir}/src/main/plantuml/*.puml</sourceFiles>
-                            <outputDirectory>${basedir}/target/classes/diagrams</outputDirectory>
+                            <sources>
+                                <directory>${basedir}/src/main/plantuml</directory>
+                                <includes>
+                                    <include>**/*.puml</include>
+                                </includes>
+                                <excludes>
+                                    <exclude>**/ignore-me.puml</exclude>
+                                </excludes>
+                            </sources>
+                            <outputDirectory>${project.build.directory}/generated-diagrams</outputDirectory>
+                            <formats>
+                                <format>png</format>
+                                <format>svg</format>
+                            </formats>
+                            <preserveDirectoryStructure>false</preserveDirectoryStructure>
                         </configuration>
                     </execution>
                 </executions>
