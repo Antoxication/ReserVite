@@ -7,8 +7,32 @@
     <artifactId>ReserVite</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- Propriétés pour JDK 22 -->
+    <properties>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+    </properties>
+
+    <!-- Dépendances -->
+    <dependencies>
+        <!-- Dépendance JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
+            <!-- Plugin PlantUML pour générer les diagrammes -->
             <plugin>
                 <groupId>com.github.davidmoten</groupId>
                 <artifactId>plantuml-maven-plugin</artifactId>
