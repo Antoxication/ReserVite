@@ -1,0 +1,76 @@
+@startuml
+
+class Client {
+    - String nom
+    - String adresse
+    - String courriel
+    - String telephone
+    + getNom(): String
+    + setNom(String nom): void
+    + getAdresse(): String
+    + setAdresse(String adresse): void
+    + getCourriel(): String
+    + setCourriel(String courriel): void
+    + getTelephone(): String
+    + setTelephone(String telephone): void
+}
+
+class LieuHebergement {
+    - String type
+    - String nom
+    - String adresse
+    - List<Chambre> chambres
+    + getType(): String
+    + setType(String type): void
+    + getNom(): String
+    + setNom(String nom): void
+    + getAdresse(): String
+    + setAdresse(String adresse): void
+    + getChambres(): List<Chambre>
+    + ajouterChambre(Chambre chambre): void
+}
+
+class Chambre {
+    - String type
+    - double prix
+    - boolean disponible
+    + getType(): String
+    + setType(String type): void
+    + getPrix(): double
+    + setPrix(double prix): void
+    + isDisponible(): boolean
+    + setDisponible(boolean disponible): void
+}
+
+class Reservation {
+    - Client client
+    - Chambre chambre
+    - Date dateArrivee
+    - Date dateDepart
+    + getClient(): Client
+    + setClient(Client client): void
+    + getChambre(): Chambre
+    + setChambre(Chambre chambre): void
+    + getDateArrivee(): Date
+    + setDateArrivee(Date dateArrivee): void
+    + getDateDepart(): Date
+    + setDateDepart(Date dateDepart): void
+    + annuler(): void
+}
+
+class SystemeGestionReservations {
+    + List<Reservation> reservations
+    + reserver(Client client, LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): Reservation
+    + annulerReservation(Reservation reservation): void
+    + List<Chambre> trouverChambresDisponibles(LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart): List<Chambre>
+}
+
+Client --> Reservation
+Chambre --> Reservation
+LieuHebergement "1" --> "0..*" Chambre
+Reservation "1" --> "1" Client
+Reservation "1" --> "1" Chambre
+SystemeGestionReservations --> Reservation
+SystemeGestionReservations --> LieuHebergement
+
+@enduml
