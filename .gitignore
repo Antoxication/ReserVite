@@ -1,0 +1,76 @@
+# Maven cible et dépendances
+target/
+*.jar
+*.war
+*.ear
+
+# Fichiers et dossiers générés par Maven
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Fichiers de configuration spécifiques à l'IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Fichiers de configuration Eclipse/IntelliJ
+.classpath
+.project
+.settings/
+*.launch
+*.swp
+*.swo
+
+# VS Code specific files
+.vscode/
+.history/
+*.code-workspace
+*.code-workspace.backup
+
+# Logs
+*.log
+
+# Fichiers de classe compilés
+*.class
+
+# Fichiers de paquets générés
+*.jar
+*.war
+*.ear
+
+# Fichiers de configuration de l'environnement
+.DS_Store
+Thumbs.db
+*.properties
+
+# Dossier de binaires
+bin/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+~$*
+
+# Fichiers spécifiques au système
+*.bak
+*.sav
+*.old
+
+# Cache IDE
+*.cache
+*.session
+*.tmp
+
+# Configuration du répertoire utilisateur
+*.config
+
+# Dossiers spécifiques à macOS
+*.DS_Store
+
+# Configurations spécifiques au système d'exploitation
+*.swp
+*.swo
