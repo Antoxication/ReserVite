@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Install Graphviz
+      run: sudo apt-get install graphviz
+
     - name: Checkout code
       uses: actions/checkout@v4
 
