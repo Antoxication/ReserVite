@@ -4,25 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LieuHebergement {
-    private String type;
+    private TypeLieuHebergement type;
     private String nom;
     private String adresse;
     private List<Chambre> chambres;
+    private List<Service> servicesGeneraux;
 
     // Constructeur
-    public LieuHebergement(String type, String nom, String adresse) {
+    public LieuHebergement(TypeLieuHebergement type, String nom, String adresse, List<Service> servicesGeneraux) {
         this.type = type;
         this.nom = nom;
         this.adresse = adresse;
         this.chambres = new ArrayList<>();
+        this.servicesGeneraux = servicesGeneraux;
     }
 
     // Getters et Setters
-    public String getType() {
+    public TypeLieuHebergement getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TypeLieuHebergement type) {
         this.type = type;
     }
 
@@ -46,19 +48,27 @@ public class LieuHebergement {
         return chambres;
     }
 
-    // Méthode pour ajouter une chambre à la liste
     public void ajouterChambre(Chambre chambre) {
         this.chambres.add(chambre);
+    }
+
+    public List<Service> getServicesGeneraux() {
+        return servicesGeneraux;
+    }
+
+    public void setServicesGeneraux(List<Service> servicesGeneraux) {
+        this.servicesGeneraux = servicesGeneraux;
     }
 
     // Méthode toString pour une représentation textuelle de l'objet
     @Override
     public String toString() {
         return "LieuHebergement{" +
-                "type='" + type + '\'' +
+                "type=" + type +
                 ", nom='" + nom + '\'' +
                 ", adresse='" + adresse + '\'' +
                 ", chambres=" + chambres +
+                ", servicesGeneraux=" + servicesGeneraux +
                 '}';
     }
 }
