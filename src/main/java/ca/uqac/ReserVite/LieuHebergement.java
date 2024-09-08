@@ -6,17 +6,17 @@ import java.util.List;
 public class LieuHebergement {
     private TypeLieuHebergement type;
     private String nom;
-    private String adresse;
     private List<Chambre> chambres;
-    private List<Service> servicesGeneraux;
+    private List<Service> services;
+    private Region region;
 
     // Constructeur
-    public LieuHebergement(TypeLieuHebergement type, String nom, String adresse, List<Service> servicesGeneraux) {
+    public LieuHebergement(TypeLieuHebergement type, String nom, List<Service> services, Region region) {
         this.type = type;
         this.nom = nom;
-        this.adresse = adresse;
         this.chambres = new ArrayList<>();
-        this.servicesGeneraux = servicesGeneraux;
+        this.services = services;
+        this.region = region;
     }
 
     // Getters et Setters
@@ -36,28 +36,29 @@ public class LieuHebergement {
         this.nom = nom;
     }
 
-    public String getAdresse() {
-        return adresse;
-    }
-
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
-
     public List<Chambre> getChambres() {
         return chambres;
     }
 
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    // Méthode pour ajouter une chambre à la liste
     public void ajouterChambre(Chambre chambre) {
         this.chambres.add(chambre);
-    }
-
-    public List<Service> getServicesGeneraux() {
-        return servicesGeneraux;
-    }
-
-    public void setServicesGeneraux(List<Service> servicesGeneraux) {
-        this.servicesGeneraux = servicesGeneraux;
     }
 
     // Méthode toString pour une représentation textuelle de l'objet
@@ -66,9 +67,9 @@ public class LieuHebergement {
         return "LieuHebergement{" +
                 "type=" + type +
                 ", nom='" + nom + '\'' +
-                ", adresse='" + adresse + '\'' +
                 ", chambres=" + chambres +
-                ", servicesGeneraux=" + servicesGeneraux +
+                ", servicesGeneraux=" + services +
+                ", region=" + region +
                 '}';
     }
 }
