@@ -59,4 +59,22 @@ class SystemeGestionReservationsImplTest {
         List<Chambre> chambresDispo = systeme.trouverChambresDisponibles(lieu, TypeChambre.SIMPLE, dateArrivee, dateDepart);
         assertTrue(chambresDispo.isEmpty());
     }
+
+    @Test
+    void testAucuneChambreCorrespondante() {
+        List<Chambre> chambresDispo = systeme.trouverChambresDisponibles(lieu, TypeChambre.DOUBLE, dateArrivee, dateDepart); // Type DOUBLE n'existe pas
+        assertTrue(chambresDispo.isEmpty());
+    }
+
+    @Test
+    void testReserverSeuleChambreIndisponible() {
+        // Réserver la seule chambre disponible
+        systeme.reserver(client, lieu, TypeChambre.SIMPLE, dateArrivee, dateDepart);
+        
+        // Essayer de réserver à nouveau alors qu'il n'y a plus de chambre disponible
+        Reservation reservation = systeme.reserver(client, lieu, TypeChambre.SIMPLE, dateArrivee, dateDepart);
+        
+        // Vérifier que la réservation est null car aucune chambre n'est disponible
+        assertNull(reservation, "Aucune chambre ne devrait être disponible");
+    }
 }
