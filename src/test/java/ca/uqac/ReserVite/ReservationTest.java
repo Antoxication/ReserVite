@@ -18,7 +18,7 @@ class ReservationTest {
     @BeforeEach
     public void setUp() {
         client = new Client("John Doe", "123 rue A", "john@example.com", "1234567890");
-        chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true, "Nord");
+        chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true);
         dateArrivee = new Date();
         dateDepart = new Date(dateArrivee.getTime() + (1000 * 60 * 60 * 24));  // +1 jour
         reservation = new Reservation(client, chambre, dateArrivee, dateDepart);
@@ -42,7 +42,7 @@ class ReservationTest {
     public void testToString() {
         String expected = "Reservation{" +
                 "client=" + client +
-                ", chambre=Chambre{type=SIMPLE, prix=100.0, disponible=true, region='Nord'}" +
+                ", chambre=Chambre{type=SIMPLE, prix=100.0, disponible=true}" +
                 ", dateArrivee=" + dateArrivee +
                 ", dateDepart=" + dateDepart +
                 '}';

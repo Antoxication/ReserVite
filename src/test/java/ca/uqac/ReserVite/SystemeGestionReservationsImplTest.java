@@ -21,8 +21,9 @@ class SystemeGestionReservationsImplTest {
     public void setUp() {
         systeme = new SystemeGestionReservationsImpl();
         client = new Client("John Doe", "123 Main St", "john@example.com", "555-1234");
-        chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true, "Nord");
-        lieu = new LieuHebergement(TypeLieuHebergement.HOTEL, "Hotel California", "456 Oak St", List.of(Service.PISCINE_INTERIEURE, Service.RESTAURANT));
+        chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true);
+        Region region = new Region("Canada", "Québec", "Montréal", "Quartier A", "Rue B");
+        lieu = new LieuHebergement(TypeLieuHebergement.HOTEL, "Hotel California", List.of(Service.PISCINE_INTERIEURE, Service.RESTAURANT), region);
         lieu.ajouterChambre(chambre);
         dateArrivee = new Date();
         dateDepart = new Date(dateArrivee.getTime() + (1000 * 60 * 60 * 24));  // +1 jour

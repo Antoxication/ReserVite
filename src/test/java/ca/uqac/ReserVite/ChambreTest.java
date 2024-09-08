@@ -12,7 +12,7 @@ class ChambreTest {
     @BeforeEach
     void setUp() {
         // Initialisation de l'objet Chambre avant chaque test
-        chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true, "Nord");
+        chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true);
     }
 
     @Test
@@ -21,7 +21,6 @@ class ChambreTest {
         assertEquals(TypeChambre.SIMPLE, chambre.getType());
         assertEquals(100.0, chambre.getPrix());
         assertTrue(chambre.isDisponible());
-        assertEquals("Nord", chambre.getRegion());
     }
 
     @Test
@@ -30,19 +29,17 @@ class ChambreTest {
         chambre.setType(TypeChambre.DOUBLE);
         chambre.setPrix(150.0);
         chambre.setDisponible(false);
-        chambre.setRegion("Sud");
 
         // Vérifie que les setters ont bien modifié les attributs
         assertEquals(TypeChambre.DOUBLE, chambre.getType());
         assertEquals(150.0, chambre.getPrix());
         assertFalse(chambre.isDisponible());
-        assertEquals("Sud", chambre.getRegion());
     }
 
     @Test
     void testToString() {
         // Vérifie la sortie de la méthode toString
-        String expected = "Chambre{type=SIMPLE, prix=100.0, disponible=true, region='Nord'}";
+        String expected = "Chambre{type=SIMPLE, prix=100.0, disponible=true}";
         assertEquals(expected, chambre.toString());
     }
 }
