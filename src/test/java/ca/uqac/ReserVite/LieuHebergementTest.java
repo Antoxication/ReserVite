@@ -2,10 +2,13 @@ package ca.uqac.ReserVite;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
 import java.util.List;
 
-public class LieuHebergementTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class LieuHebergementTest {
 
     private LieuHebergement lieuHebergement;
     private Chambre chambre1;
@@ -13,21 +16,28 @@ public class LieuHebergementTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialisation de LieuHebergement et de quelques Chambres
-        lieuHebergement = new LieuHebergement("Hôtel", "Le Grand Palace", "123 Rue du Paradis");
-        chambre1 = new Chambre("Simple", 80.0, true);
-        chambre2 = new Chambre("Double", 120.0, true);
+        // Initialisation du LieuHebergement avec des services généraux et quelques Chambres
+    lieuHebergement = new LieuHebergement(
+        TypeLieuHebergement.HOTEL,
+        "Le Grand Palace",
+        "123 Rue du Paradis",
+        Arrays.asList(Service.PISCINE_INTERIEURE, Service.SALLE_DE_CONDITIONNEMENT_PHYSIQUE)
+    );
+        chambre1 = new Chambre(TypeChambre.SIMPLE, 80.0, true, "Nord");
+        chambre2 = new Chambre(TypeChambre.DOUBLE, 120.0, true, "Sud");
+        lieuHebergement.ajouterChambre(chambre1);
+        lieuHebergement.ajouterChambre(chambre2);
     }
 
     @Test
     public void testGetType() {
-        assertEquals("Hôtel", lieuHebergement.getType());
+        assertEquals(TypeLieuHebergement.HOTEL, lieuHebergement.getType());
     }
 
     @Test
     public void testSetType() {
-        lieuHebergement.setType("Auberge");
-        assertEquals("Auberge", lieuHebergement.getType());
+        lieuHebergement.setType(TypeLieuHebergement.COUETTE_ET_CAFE);
+        assertEquals(TypeLieuHebergement.COUETTE_ET_CAFE, lieuHebergement.getType());
     }
 
     @Test
@@ -53,26 +63,35 @@ public class LieuHebergementTest {
     }
 
     @Test
-    public void testAjouterChambre() {
-        lieuHebergement.ajouterChambre(chambre1);
-        List<Chambre> chambres = lieuHebergement.getChambres();
-        assertEquals(1, chambres.size());
-        assertEquals(chambre1, chambres.get(0));
-    }
-
-    @Test
     public void testGetChambres() {
-        lieuHebergement.ajouterChambre(chambre1);
-        lieuHebergement.ajouterChambre(chambre2);
         List<Chambre> chambres = lieuHebergement.getChambres();
-        assertEquals(2, chambres.size());
         assertTrue(chambres.contains(chambre1));
         assertTrue(chambres.contains(chambre2));
     }
 
     @Test
+    public void testGetServicesGeneraux() {
+        List<Service> services = lieuHebergement.getServicesGeneraux();
+        assertTrue(services.contains(Service.PISCINE_INTERIEURE));
+        assertTrue(services.contains(Service.SALLE_DE_CONDITIONNEMENT_PHYSIQUE));
+    }
+
+    @Test
+    public void testSetServicesGeneraux() {
+        // Initialisation d'une nouvelle liste de services
+        List<Service> nouveauxServices = Arrays.asList(Service.PISCINE_INTERIEURE, Service.SALLE_DE_CONDITIONNEMENT_PHYSIQUE);
+
+        // Modification des services généraux
+        lieuHebergement.setServicesGeneraux(nouveauxServices);
+
+        // Vérification que les services généraux ont bien été modifiés
+        assertEquals(nouveauxServices, lieuHebergement.getServicesGeneraux());
+    }
+
+    @Test
     public void testToString() {
-        String expected = "LieuHebergement{type='Hôtel', nom='Le Grand Palace', adresse='123 Rue du Paradis', chambres=[]}";
+        String expected = "LieuHebergement{type=HOTEL, nom='Le Grand Palace', adresse='123 Rue du Paradis', chambres=[Chambre{type=SIMPLE, prix=80.0, disponible=true, region='Nord'}, Chambre{type=DOUBLE, prix=120.0, disponible=true, region='Sud'}], servicesGeneraux=[PISCINE_INTERIEURE, SALLE_DE_CONDITIONNEMENT_PHYSIQUE]}";
         assertEquals(expected, lieuHebergement.toString());
     }
+
 }

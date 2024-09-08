@@ -12,7 +12,7 @@ public class SystemeGestionReservationsImpl implements SystemeGestionReservation
     }
 
     @Override
-    public Reservation reserver(Client client, LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart) {
+    public Reservation reserver(Client client, LieuHebergement lieu, TypeChambre typeChambre, Date dateArrivee, Date dateDepart) {
         List<Chambre> chambresDispo = trouverChambresDisponibles(lieu, typeChambre, dateArrivee, dateDepart);
         if (!chambresDispo.isEmpty()) {
             Chambre chambre = chambresDispo.get(0); // Prend la première chambre disponible
@@ -32,7 +32,7 @@ public class SystemeGestionReservationsImpl implements SystemeGestionReservation
     }
 
     @Override
-    public List<Chambre> trouverChambresDisponibles(LieuHebergement lieu, String typeChambre, Date dateArrivee, Date dateDepart) {
+    public List<Chambre> trouverChambresDisponibles(LieuHebergement lieu, TypeChambre typeChambre, Date dateArrivee, Date dateDepart) {
         List<Chambre> disponibles = new ArrayList<>();
         for (Chambre chambre : lieu.getChambres()) {
             if (chambre.getType().equals(typeChambre) && chambre.isDisponible()) {
