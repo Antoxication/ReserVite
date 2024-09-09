@@ -3,7 +3,7 @@ package ca.uqac.ReserVite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,16 +11,16 @@ class ReservationTest {
 
     private Client client;
     private Chambre chambre;
-    private Date dateArrivee;
-    private Date dateDepart;
+    private LocalDate dateArrivee;
+    private LocalDate dateDepart;
     private Reservation reservation;
 
     @BeforeEach
     public void setUp() {
         client = new Client("John Doe", "123 rue A", "john@example.com", "1234567890");
         chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true);
-        dateArrivee = new Date();
-        dateDepart = new Date(dateArrivee.getTime() + (1000 * 60 * 60 * 24));  // +1 jour
+        dateArrivee = LocalDate.now();
+        dateDepart = dateArrivee.plusDays(1);  // +1 jour
         reservation = new Reservation(client, chambre, dateArrivee, dateDepart);
     }
 
@@ -48,5 +48,4 @@ class ReservationTest {
                 '}';
         assertEquals(expected, reservation.toString());
     }
-
 }
