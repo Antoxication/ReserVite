@@ -1,8 +1,8 @@
 package ca.uqac.ReserVite;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public record Reservation(Client client, Chambre chambre, Date dateArrivee, Date dateDepart) {
+public record Reservation(Client client, Chambre chambre, LocalDate dateArrivee, LocalDate dateDepart) {
 
     // Annuler la réservation
     public void annuler() {
