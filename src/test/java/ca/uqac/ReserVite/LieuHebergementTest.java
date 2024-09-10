@@ -17,17 +17,15 @@ class LieuHebergementTest {
     void setUp() {
         // Initialisation du LieuHebergement avec des services généraux et quelques Chambres
         region = new Region("Canada", "Québec", "Saguenay", "Chicoutimi", "123 Rue Principale");
-        lieuHebergement = new LieuHebergement(
-            TypeLieuHebergement.HOTEL,
-            "Le Grand Palace",
-            Arrays.asList(Service.PISCINE_INTERIEURE, Service.SALLE_DE_CONDITIONNEMENT_PHYSIQUE),
-            region
-        );
-
         Chambre chambre1 = new Chambre(TypeChambre.SIMPLE, 80.0, true);
         Chambre chambre2 = new Chambre(TypeChambre.DOUBLE, 120.0, true);
-        lieuHebergement.ajouterChambre(chambre1);
-        lieuHebergement.ajouterChambre(chambre2);
+        lieuHebergement = new LieuHebergement(
+            "Le Grand Palace",
+            TypeLieuHebergement.HOTEL,
+            region,
+            Arrays.asList(Service.PISCINE_INTERIEURE, Service.SALLE_DE_CONDITIONNEMENT_PHYSIQUE),
+            Arrays.asList(chambre1, chambre2)
+        );
     }
 
     @Test

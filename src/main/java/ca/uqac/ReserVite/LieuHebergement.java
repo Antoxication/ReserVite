@@ -1,6 +1,5 @@
 package ca.uqac.ReserVite;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LieuHebergement {
@@ -11,10 +10,10 @@ public class LieuHebergement {
     private Region region;
 
     // Constructeur
-    public LieuHebergement(TypeLieuHebergement type, String nom, List<Service> services, Region region) {
+    public LieuHebergement(String nom, TypeLieuHebergement type, Region region, List<Service> services, List<Chambre> chambres) {
         this.type = type;
         this.nom = nom;
-        this.chambres = new ArrayList<>();
+        this.chambres = chambres;
         this.services = services;
         this.region = region;
     }
@@ -54,11 +53,6 @@ public class LieuHebergement {
 
     public void setRegion(Region region) {
         this.region = region;
-    }
-
-    // Méthode pour ajouter une chambre à la liste
-    public void ajouterChambre(Chambre chambre) {
-        this.chambres.add(chambre);
     }
 
     // Méthode toString pour une représentation textuelle de l'objet

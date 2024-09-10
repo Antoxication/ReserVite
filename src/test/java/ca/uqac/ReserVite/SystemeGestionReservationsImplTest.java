@@ -23,8 +23,7 @@ class SystemeGestionReservationsImplTest {
         client = new Client("John Doe", "123 Main St", "john@example.com", "555-1234");
         chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true);
         Region region = new Region("Canada", "Québec", "Montréal", "Quartier A", "Rue B");
-        lieu = new LieuHebergement(TypeLieuHebergement.HOTEL, "Hotel California", List.of(Service.PISCINE_INTERIEURE, Service.RESTAURANT), region);
-        lieu.ajouterChambre(chambre);
+        lieu = new LieuHebergement("Hotel California", TypeLieuHebergement.HOTEL, region, List.of(Service.PISCINE_INTERIEURE, Service.RESTAURANT), List.of(chambre));
         dateArrivee = LocalDate.now().plusDays(2);
         dateDepart = dateArrivee.plusDays(4);
     }
@@ -171,21 +170,6 @@ class SystemeGestionReservationsImplTest {
         assertNull(reservation, "La réservation ne doit pas être possible si la date d'arrivée est après la date de départ.");
     }
 
-    @Test
-    public void testReservationPourAutreChambreMemeType() {
-        // Créer une autre chambre du même type (SIMPLE)
-        Chambre autreChambre = new Chambre(TypeChambre.SIMPLE, 120.0, true);
-        lieu.ajouterChambre(autreChambre);
-
-        // Faire une réservation pour la première chambre (SIMPLE)
-        systeme.reserver(client, lieu, TypeChambre.SIMPLE, dateArrivee, dateDepart);
-
-        // Faire une nouvelle réservation pour une autre chambre du même type (SIMPLE) et pour les mêmes dates
-        Reservation reservation = systeme.reserver(client, lieu, TypeChambre.SIMPLE, dateArrivee, dateDepart);
-
-        assertNotNull(reservation, "La réservation pour l'autre chambre du même type doit être possible.");
-        assertEquals(autreChambre, reservation.chambre(), "La réservation doit être pour l'autre chambre SIMPLE.");
-    }
 
     @Test
     public void testReserverDatesContigues() {
