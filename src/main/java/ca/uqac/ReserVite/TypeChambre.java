@@ -1,5 +1,5 @@
 package ca.uqac.ReserVite;
 
 public enum TypeChambre {
-    SIMPLE, DOUBLE, SUITE
+    SIMPLE, DOUBLE, SUITE, INDIFFERENT
 }

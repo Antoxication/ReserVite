@@ -3,6 +3,8 @@ package ca.uqac.ReserVite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SystemeGestionReservationsImplTest {
 
     private SystemeGestionReservationsImpl systeme;
+    private Region region;
     private Client client;
     private Chambre chambre;
     private LieuHebergement lieu;
@@ -22,10 +25,11 @@ class SystemeGestionReservationsImplTest {
         systeme = new SystemeGestionReservationsImpl();
         client = new Client("John Doe", "123 Main St", "john@example.com", "555-1234");
         chambre = new Chambre(TypeChambre.SIMPLE, 100.0, true);
-        Region region = new Region("Canada", "Québec", "Montréal", "Quartier A", "Rue B");
+        region = new Region("Canada", "QC", "Montréal", "Quartier A", "Rue B");
         lieu = new LieuHebergement("Hotel California", TypeLieuHebergement.HOTEL, region, List.of(Service.PISCINE_INTERIEURE, Service.RESTAURANT), List.of(chambre));
         dateArrivee = LocalDate.now().plusDays(2);
         dateDepart = dateArrivee.plusDays(4);
+        systeme.ajouterLieu(lieu);
     }
 
     @Test
@@ -170,7 +174,6 @@ class SystemeGestionReservationsImplTest {
         assertNull(reservation, "La réservation ne doit pas être possible si la date d'arrivée est après la date de départ.");
     }
 
-
     @Test
     public void testReserverDatesContigues() {
         // Première réservation du 10 au 15
@@ -197,5 +200,120 @@ class SystemeGestionReservationsImplTest {
         Reservation reservation = systeme.reserver(client, lieu, TypeChambre.SIMPLE, dateArriveePasse, dateDepart);
 
         assertNull(reservation, "La réservation ne doit pas être possible si la date d'arrivée est dans le passé.");
+    }
+
+    @Test
+    public void testRecueillirBesoinsClient() {
+        String simulatedInput = "H\nCanada\nQC\nMontréal\nQuartier A\nRue B\nS\nI,R\n";
+        InputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+
+        BesoinsClient besoins = systeme.recueillirBesoinsClient();
+
+        // Vérification des valeurs
+        assertEquals(TypeLieuHebergement.HOTEL, besoins.typeLieuHebergement());
+        assertEquals("Canada", besoins.region().pays());
+        assertEquals("QC", besoins.region().province());
+        assertEquals(TypeChambre.SIMPLE, besoins.typeChambre());
+        assertTrue(besoins.services().contains(Service.PISCINE_INTERIEURE));
+        assertTrue(besoins.services().contains(Service.RESTAURANT));
+
+        System.setIn(System.in); // Réinitialisation de System.in
+    }
+
+    @Test
+    public void testRecueillirBesoinsClientChambreDouble() {
+        String simulatedInput = "\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\nD\n\"\"\n";
+        InputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+
+        BesoinsClient besoins = systeme.recueillirBesoinsClient();
+
+        // Vérification des valeurs
+        assertEquals(TypeChambre.DOUBLE, besoins.typeChambre());
+
+        System.setIn(System.in); // Réinitialisation de System.in
+    }
+
+    @Test
+    public void testRecueillirBesoinsClientChambreSuite() {
+        String simulatedInput = "\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\nU\n\"\"\n";
+        InputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+
+        BesoinsClient besoins = systeme.recueillirBesoinsClient();
+
+        // Vérification des valeurs
+        assertEquals(TypeChambre.SUITE, besoins.typeChambre());
+
+        System.setIn(System.in); // Réinitialisation de System.in
+    }
+
+    @Test
+    public void testRecueillirBesoinsClientMotel() {
+        String simulatedInput = "M\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n";
+        InputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+
+        BesoinsClient besoins = systeme.recueillirBesoinsClient();
+
+        // Vérification des valeurs
+        assertEquals(TypeLieuHebergement.MOTEL, besoins.typeLieuHebergement());
+
+        System.setIn(System.in); // Réinitialisation de System.in
+    }
+
+    @Test
+    public void testRecueillirBesoinsClientCouetteEtCafe() {
+        String simulatedInput = "C\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n\"\"\n";
+        InputStream in = new ByteArrayInputStream(simulatedInput.getBytes());
+        System.setIn(in);
+
+        BesoinsClient besoins = systeme.recueillirBesoinsClient();
+
+        // Vérification des valeurs
+        assertEquals(TypeLieuHebergement.COUETTE_ET_CAFE, besoins.typeLieuHebergement());
+
+        System.setIn(System.in); // Réinitialisation de System.in
+    }
+
+    @Test
+    public void testTrouverLieuxDisponibles() {
+
+        // Cas où le client est indifférent sur tout
+        BesoinsClient besoins = new BesoinsClient(TypeLieuHebergement.INDIFFERENT, new Region("", "", "", "", ""), TypeChambre.INDIFFERENT, List.of(Service.PISCINE_INTERIEURE));
+        List<LieuHebergement> lieux = systeme.trouverLieuxDisponibles(besoins.typeLieuHebergement(), besoins.region(), besoins.typeChambre(), besoins.services());
+
+        assertEquals(1, lieux.size());
+        assertEquals(lieu, lieux.get(0)); // Lieu correspond aux critères
+
+        // Cas où le client est spécifique sur tout
+        besoins = new BesoinsClient(TypeLieuHebergement.HOTEL, region, TypeChambre.SIMPLE, List.of(Service.PISCINE_INTERIEURE));
+        lieux = systeme.trouverLieuxDisponibles(besoins.typeLieuHebergement(), besoins.region(), besoins.typeChambre(), besoins.services());
+
+        assertEquals(1, lieux.size());
+        assertEquals(lieu, lieux.get(0)); // Lieu correspond aux critères
+    }
+
+    @Test
+    public void testLieuNonAjouteConditionsNonRemplies() {
+
+        // Besoins du client qui ne correspondent pas aux conditions du lieu
+        BesoinsClient besoins = new BesoinsClient(
+            TypeLieuHebergement.COUETTE_ET_CAFE,  // Le type de lieu est différent
+            new Region("France", "N/A", "Nîmes", "Quartier B", "Rue C"),  // La région est différente
+            TypeChambre.SUITE,  // Le type de chambre n'existe pas dans le lieu
+            List.of(Service.RESTAURANT)
+        );
+
+        List<LieuHebergement> lieuxDisponibles = systeme.trouverLieuxDisponibles(
+            besoins.typeLieuHebergement(), 
+            besoins.region(), 
+            besoins.typeChambre(), 
+            besoins.services()
+        );
+
+        // Vérifier que le lieu n'est pas ajouté, car aucune condition n'est remplie
+        assertTrue(lieuxDisponibles.isEmpty(), "Le lieu ne doit pas être ajouté si aucune condition n'est remplie.");
     }
 }
