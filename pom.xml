@@ -41,6 +41,7 @@
                 <version>0.2.12</version>
                 <executions>
                     <execution>
+                        <?m2e execute onConfiguration,onIncremental?>
                         <id>generate-diagrams</id>
                         <phase>generate-resources</phase>
                         <goals>
